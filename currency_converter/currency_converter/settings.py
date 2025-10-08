@@ -31,7 +31,10 @@ SECRET_KEY = 'django-insecure-cz4n%c8t^__=%#ir#x4+%!hl798j7xp@oea!z8+r8k0maxmxs^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'https://continentalcurrencyconverter.onrender.com',  # your backend domain
+    'https://continentalcurrencyconverter.vercel.app'  # your frontend domain
+    ]  # Add your production domain here
 
 # Application definition
 
@@ -66,7 +69,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     # "http://localhost:3000",  # React development server
     # "http://localhost:5500",  # if serving HTML with live server in VS Code
-    "https://continentalcurrencyconverter.vercel.app/",  # production frontend URL
+    "https://continentalcurrencyconverter.vercel.app",  # production frontend URL
 ]
 
 ROOT_URLCONF = 'currency_converter.urls'
