@@ -32,8 +32,8 @@ SECRET_KEY = 'django-insecure-cz4n%c8t^__=%#ir#x4+%!hl798j7xp@oea!z8+r8k0maxmxs^
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'https://continentalcurrencyconverter.onrender.com',  # your backend domain
-    'https://continentalcurrencyconverter.vercel.app'  # your frontend domain
+    'continentalcurrencyconverter.onrender.com',  # your backend domain
+    'continentalcurrencyconverter.vercel.app'  # your frontend domain
     ]  # Add your production domain here
 
 # Application definition
