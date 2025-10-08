@@ -33,7 +33,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'continentalcurrencyconverter.onrender.com',  # your backend domain
-    'continentalcurrencyconverter.vercel.app'  # your frontend domain
+    'continentalcurrencyconverter.vercel.app',  # your frontend domain
+    'localhost',
+    '127.0.0.1',
     ]  # Add your production domain here
 
 # Application definition

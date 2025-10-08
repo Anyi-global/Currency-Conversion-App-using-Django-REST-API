@@ -48,25 +48,42 @@ class CurrencyConverterAPIView(APIView):
         url = f'https://v6.exchangerate-api.com/v6/{api_key}/latest/{base_currency}'
 
         # Make the request to the external API
+        data = {}  # initialize data to avoid reference before assignment error
         try:
             response = requests.get(url)
             print(response)
-            if response.status_code != 200:
-                print('Status Code', response.status_code)
-                print('Response Text', response.text)
-                return Response({"error": f"Failed to fetch exchange rates. {response.status_code}"}, status=status.HTTP_502_BAD_GATEWAY)
+
+            # if base currency not supported, use USD as fallback
+            if response.status_code != 200 or data.get('result') != 'success':
+                # Retry using USD as base currency
+                fallback_url = f'https://v6.exchangerate-api.com/v6/{api_key}/latest/USD'
+                response = requests.get(fallback_url)
+                data = response.json()
+
+                if data.get('result') != 'success':
+                    return Response({"error": "Failed to fetch exchange rates."}, status=status.HTTP_502_BAD_GATEWAY)
+                rates = data.get('conversion_rates', {})
+                if base_currency not in rates or target_currency not in rates:
+                    return Response({"error": f"Invalid or Unsupported currency codes."}, status=status.HTTP_400_BAD_REQUEST)
+            
+                # Compute using USD as bridge
+                usd_to_base = rates[base_currency]
+                usd_to_target = rates[target_currency]
+                rate = usd_to_target / usd_to_base  # base to target rate
+            else:
+                # if base currency is supported directly
+                rates = data.get('conversion_rates', {})
+                print(rates)
+                if target_currency not in rates:
+                    return Response({"error": f"Invalid or Unsupported target currency: {target_currency}"}, status=status.HTTP_400_BAD_REQUEST)
+                rate = rates[target_currency]
         
             data = response.json()
+            print(data)
             if data.get('result') != 'success':
                 return Response({"error": data.get('error-type', "Unknown error occurred.")}, status=status.HTTP_502_BAD_GATEWAY)
             
-            rates = data.get('conversion_rates', {})
-            rate = rates.get(target_currency)
-            rate = round(rate, 2)
-
-            if not rate:
-                return Response({"error": f"Invalid or Unsupported target currency: {target_currency}"}, status=status.HTTP_400_BAD_REQUEST)
-
+            rate = round(rate, 5)
             converted_amount = amount * rate
             converted_amount = round(converted_amount, 2)
         
