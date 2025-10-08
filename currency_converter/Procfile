@@ -1,0 +1,1 @@
+web: gunicorn currency_converter.wsgi

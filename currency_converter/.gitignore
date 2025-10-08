@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Virtual environment
+venv/
+env/
+
+# Django
+db.sqlite3
+/staticfiles/
+/media/
+
+# Environment variables
+.env
+
+# VSCode / IDE files
+.vscode/
+.idea/
+
+# Node (if you use it for frontend)
+node_modules/
+
+# OS
+.DS_Store
+
+# Render / deployment
+# (keep Procfile — don't ignore it)
